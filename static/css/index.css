@@ -8,8 +8,7 @@ body {
 
 /* Dashboard */
 
-#temp_display {
-	height: 50px;
+.temp_display {
 	background-color: #D1E0EB;
 	text-align: center;
 }

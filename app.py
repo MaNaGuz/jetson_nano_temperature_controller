@@ -4,11 +4,19 @@ import json
 
 from flask import Flask, render_template, Response
 
+stream = os.popen("hostname -I")
+ips = stream.read().strip().split(" ")
+host_ip = None
+for ip in ips:
+    if re.search(r'^192\.168\.1\.[0-9]{1,3}$', ip):
+        host_ip = ip
+        break
+
 app = Flask(__name__)
 
 @app.route('/')
 def index():
-    return render_template("index.html")
+    return render_template("index.html", host_ip=host_ip)
 
 @app.route("/temperature", methods=['GET'])
 def temperature():
@@ -26,11 +34,13 @@ def temperature():
             
                 with open('%s/%s/temp' % (path, thermal_zone), 'r') as temp_file:
                     device_temp = temp_file.read()
-                thermal_data[device_type] = device_temp.strip()
+                thermal_data[device_type] = int(device_temp.strip())/1000
 
-            yield json.dumps(thermal_data)
+            yield f'data: {json.dumps(thermal_data)}\n\n'
 
-    return Response(generator(), mimetype='text/plain')
+    return Response(generator(), mimetype='text/event-stream')
 
 if __name__ == "__main__":
+    if not host_ip:
+        raise RuntimeError('Server ip was not detected')
     app.run(host="0.0.0.0", port="5000", debug=True)

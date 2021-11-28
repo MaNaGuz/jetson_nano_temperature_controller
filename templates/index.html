@@ -39,7 +39,48 @@
 		<div class="container">
 			<div class="row">
 				<div class="col">
-					<div id="temp_display">
+					<div id="AO-therm" class="temp_display">
+						<p>AO</p>
+						<h2 class="temp_display_text">100 °C</h2>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col">
+					<div id="CPU-therm" class="temp_display">
+					        <p>CPU</p>
+						<h2 class="temp_display_text">100 °C</h2>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col">
+					<div id="GPU-therm" class="temp_display">
+						<p>GPU</p>
+						<h2 class="temp_display_text">100 °C</h2>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col">
+					<div id="PLL-therm" class="temp_display">
+						<p>PLL</p>
+						<h2 class="temp_display_text">100 °C</h2>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col">
+					<div id="PMIC-Die" class="temp_display">
+						<p>PMIC</p>
+						<h2 class="temp_display_text">100 °C</h2>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col">
+					<div id="thermal-fan-est" class="temp_display">
+						<p>Fan Est</p>
 						<h2 class="temp_display_text">100 °C</h2>
 					</div>
 				</div>
@@ -58,6 +99,18 @@
 			</div>
 		</div>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+		<script>
+			var evtSource = new EventSource('http://{{host_ip}}:5000/temperature');
+			evtSource.onmessage = function(e) {
+    				data = JSON.parse(e.data);
+				$('div#AO-therm h2').text(`${data['AO-therm']} °C`);
+				$('div#CPU-therm h2').text(`${data['CPU-therm']} °C`);
+				$('div#GPU-therm h2').text(`${data['GPU-therm']} °C`);
+				$('div#PLL-therm h2').text(`${data['PLL-therm']} °C`);
+				$('div#PMIC-Die h2').text(`${data['PMIC-Die']} °C`);
+				$('div#thermal-fan-est h2').text(`${data['thermal-fan-est']} °C`);
+			}
+		</script>
 		<script src="{{url_for('static',filename='js/index.js')}}"></script>
 	</body>
 </html>
