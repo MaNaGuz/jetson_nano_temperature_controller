@@ -1,0 +1,31 @@
+body {
+	background-color: #98BAE7;
+}
+
+.container {
+	background-color: white;
+}
+
+/* Dashboard */
+
+#temp_display {
+	height: 50px;
+	background-color: #D1E0EB;
+	text-align: center;
+}
+
+.temp_display_text {
+	font-family: 'Orbitron', Georgia, serif;
+}
+
+.temp_controllers {
+	position: relative;
+}
+
+.low_temp {
+}
+
+.raise_temp{
+	position: absolute;
+	right: 0;
+}
